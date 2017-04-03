@@ -9,9 +9,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="uk.co.thebillington.jsonexample.MainActivity">
 
-    <TextView
-        android:id="@+id/textBox"
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:layout_below="@id/username"/>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/login"
+        android:text="Login"
+        android:layout_below="@id/password"/>
+
 </RelativeLayout>
