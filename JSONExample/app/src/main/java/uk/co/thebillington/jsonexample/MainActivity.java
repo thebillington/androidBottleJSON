@@ -2,7 +2,11 @@ package uk.co.thebillington.jsonexample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.*;
 
@@ -18,32 +22,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView tv = (TextView) findViewById(R.id.textBox);
-
-        HTTPClient.get("/json", null, new JsonHttpResponseHandler() {
+        Button login = (Button) findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onClick(View v) {
 
-                tv.setText("SUCCESS");
-                // If the response is JSONObject instead of expected JSONArray
-                String text = "";
+                //Create a new JSON object to store the params
+                //JSONObject params = new JSONObject();
+                JSONObject jsonUser = new JSONObject();
+
+                String user = ((EditText) findViewById(R.id.username)).getText().toString();
+                String pass = ((EditText) findViewById(R.id.username)).getText().toString();
+
                 try {
-                    text += response.get("title");
-                    text += "\n";
-                    text += response.get("description");
+                    jsonUser.put("username", user);
+                    jsonUser.put("password", pass);
+                    //params.put(PrivateFields.TAG_USER, jsonUser);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                tv.setText(text);
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject response) {
 
-                tv.setText("FAILURE");
+                HTTPClient.post(getBaseContext(), "/mlogin", jsonUser, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        String msg = "No response";
+                        try {
+                            msg = response.getString("message");
+                        } catch (JSONException e) {
+                            msg = e.toString();
+                        }
 
-                error.printStackTrace();
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject response) {
+                        error.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
+
+
     }
 }
