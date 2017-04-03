@@ -4,6 +4,18 @@ from json import dumps
 import json
 from urllib2 import urlopen
 
+#Create a user object to hold information about a single user
+class User(object):
+	
+	#Constructor
+	def __init__(self, u, p):
+		#Set the username and password
+		self.username = u
+		self.password = p
+
+#Create an empty list of users
+users = []
+
 #Create the index
 @route('/')
 def index():
@@ -28,6 +40,16 @@ def login():
         </form>
     	'''
 
+#Create a get request for signing up
+@get('/signup')
+def signup():
+	return '''
+	<form action="/signup" method="post">
+            Username: <input name="username" type="text" />
+            Password: <input name="password" type="password" />
+        <input value="Sign up" type="submit" />
+	'''
+
 #Create our post function for logging in
 @post('/login')
 def do_login():
@@ -39,7 +61,7 @@ def do_login():
 	return dumps(rv)
 
 
-#Create our post function for logging in
+#Create our post function for logging in on mobile
 @post('/mlogin')
 def do_mlogin():
 	request.content_type = "application/json"
@@ -49,6 +71,26 @@ def do_mlogin():
         rv = {"message":"successful login from {}".format(username)}
         response.content_type = "application/json"
         return dumps(rv)
+
+#Create our post function for signing up
+@post('/signup')
+def do_signup():
+	username = request.forms.get('username')
+	password = request.forms.get('password')
+
+	msg = "NULL"
+	exists = False
+	for u in users:
+		if u.username == username:
+			msg = "User already exists"
+			exists = True
+	if not exists:
+		users.append(User(username, password))
+		msg = "User created successfully"
+	print(users)
+	rv = {"message":msg}
+	response.content_type = "application/json"
+	return dumps(rv)
 
 #Run the app if not an import
 if __name__ == "__main__":
