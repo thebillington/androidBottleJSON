@@ -1,7 +1,7 @@
 # androidBottleJSON
 A simple Android app that uses the loopj ASYNC http library for Android to connect to a simple bottle server that serves RESTful JSON over localhost.
 
-##Running the bottle app
+## Running the bottle app
 
 *Tested with Python version 2.7 and bottle version 0.12.13**
 
@@ -13,7 +13,7 @@ To test that your server is running simply open your browser and navigate to:
 
     127.0.0.1:8080/json
 
-##Running the Android app
+## Running the Android app
 
 If you are connecting the Android app to the JSON server then you either need to run the app in an emulator, or alternatively connect the computer that is running the server to a WiFi hotspot on your Android device.
 
@@ -21,7 +21,7 @@ To import the app into Android Studio simply navigate to the folder where the ap
 
 The connection may take a while so just give it opportunity to complete once the app is running.
 
-##Setting up loopj async http library
+## Setting up loopj async http library
 
 If you are setting up loopj libraries from scratch then there are a few things you should note.
 
